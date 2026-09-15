@@ -1,0 +1,6 @@
+build/
+.DS_Store
+*.gcode
+*.3mf
+.venv/
+__pycache__/
