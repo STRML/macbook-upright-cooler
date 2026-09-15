@@ -21,6 +21,29 @@ GitHub before edits. Physical validation is tracked in
 [issue #2](https://github.com/STRML/macbook-upright-cooler/issues/2), followed by
 [performance testing in #3](https://github.com/STRML/macbook-upright-cooler/issues/3).
 
+## V12 validation adapter
+
+The user asked to adapt V2's bottom for the llano V12 and confirmed that the old
+split V12 panels have **not** been fit-checked. The separate
+[adapter guide](../cad/upright_v2/v12_validation/README.md) covers a four-piece
+footprint gauge, three joint coupons, and a bolted four-tile deck with a continuous
+collar. V2's original source and parts remain unchanged; V12 mode removes its fan,
+cartridge, and feet.
+
+Next: print the gauge and coupon parts, check the actual cooler's foam/contact
+geometry, and identify a safe housing restraint. Do not treat the inherited
+381 × 269 mm outline or its 30 mm corner radius as verified V12 dimensions.
+Powered use also requires the adapter's load, seal, and stability checks, plus
+the existing Mac-side fit checks. No V12 body, foam, or strap route is invented
+in the CAD.
+
+The user chose to finish this adapter before revising standalone V2. External
+review proposals for 30-35 mm fan clearance, lid ribs, narrower supports, and
+measured insert variants are recorded in the benchmark plan. Air is pushed into
+the center hinge intake; the outer hinge exhausts and side intakes remain open.
+The user's hand check supports that direction, but actual vent boundaries and
+flow under external pressure still need checking.
+
 ## Goal
 
 Create an elegant, compact external cooling dock for a **14-inch MacBook Pro M5 Max** used primarily in **clamshell mode** for:

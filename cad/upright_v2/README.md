@@ -10,6 +10,10 @@ open insert is an experimental bench part. Confirm the hinge recess, gasket
 contact, and intake/exhaust boundaries before testing it on the Mac. See the
 [measurements and sources](../../docs/VENT_GEOMETRY.md).
 
+To supply air from the llano V12 instead of a standalone fan, see the separate
+[V12 validation adapter](v12_validation/README.md). Start with its footprint gauge;
+the existing V12 outline has not been fit-checked on the cooler.
+
 ![V2 exploded assembly](../../renders/upright_v2_exploded.png)
 
 ## Build and outputs

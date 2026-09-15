@@ -22,6 +22,39 @@ ends. Its separate base-M5 description identifies a single fan. This supports
 the airflow concept but does not prove that the two models have identical vent
 dimensions. [SVALT model guide](https://svalt.com/blogs/svalt/laptops).
 
+## Airflow direction
+
+The intended stock flow for the two-fan Pro/Max is:
+
+| Opening | Stock direction | Dock treatment |
+|---|---|---|
+| Center hinge vent | Cool air enters | Feed from the sealed center insert |
+| Left and right outer hinge vents | Hot air leaves | Keep outside the seal and clear of supports |
+| Side chassis slots | Cool air enters | Leave open; do not tape them shut |
+
+This follows SVALT's description for the 2021-2026+ 14-inch M1-M5 Pro/Max
+family, not its separate single-fan base-M5 entry. Apple service drawings support
+the two-fan layout but do not establish flow direction at every opening. On
+September 15, 2026, the user reported hot outward flow at the outer hinge vents,
+apparent intake at the center, and cool side slots. That is consistent with the
+description, but is not a measured flow map.
+
+V2 pushes air into the center intake. With a standalone fan, its intake faces the
+desk and its discharge faces the plenum; check the fan's airflow arrow or actual
+flow before installation. With the V12 adapter, the V12 supplies the pressure and
+the standalone fan is removed. Pulling through the same center connection would
+oppose its normal intake role. Exhaust extraction would need a different adapter
+at the two outer vents and is not part of this design.
+
+Before fitting the dock, check direction during a sustained load with a narrow
+paper strip held securely a few millimeters outside each opening. Never insert
+it, release it, or cover the vent. Record movement toward or away from the case;
+temperature alone cannot establish direction. Repeat with the pressure source
+at low speed after all mechanical checks pass. Added pressure may send some air
+out through the side intakes instead of through the heatsinks. Keep them open
+and record that behavior during the speed sweep rather than assuming all added
+flow follows the intended path.
+
 ## Supplied files and provenance
 
 The two Downloads archives contain an open-lid model:

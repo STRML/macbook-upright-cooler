@@ -12,6 +12,10 @@ The project started from the sealed-adapter approach demonstrated by Samuel Greg
 V2 is ready for construction and supervised fit checks. Cooling performance and
 the final M5 Max interface have **not** been validated. Start with the blank insert.
 
+For V12-powered validation, use the separate [V12 deck adapter](cad/upright_v2/v12_validation/README.md).
+Its cooler footprint is unverified: print the small fit gauge and joint coupons
+before committing to the full deck. It reuses V2's upper parts without a second fan.
+
 ## Current state
 
 There are three prototypes in this folder:

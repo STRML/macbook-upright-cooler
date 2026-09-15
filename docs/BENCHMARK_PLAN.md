@@ -8,8 +8,14 @@ The purpose of benchmarking is to determine whether external cooling raises **su
 2. V12 present but with the custom seal/adapter removed or deliberately unsealed
 3. V12 + sealed adapter
 4. V12 + sealed adapter at multiple fan speeds
-5. Upright prototype with a quiet 140 mm fan
-6. Upright prototype with a higher-static-pressure 140 mm fan, if needed
+5. Upright V2 on the V12 using the [validation deck](../cad/upright_v2/v12_validation/README.md), after its fit, restraint, load, and leak checks pass
+6. The same Upright V2 upper assembly with a quiet 140 mm fan
+7. Upright V2 with a higher-static-pressure 140 mm fan, if needed
+
+The V12 deck removes V2's standalone fan and feet. Keep the V2 laptop insert,
+gasket, machine settings, and workload fixed when changing pressure sources.
+V12-powered success validates that combination, not the standalone fan's pressure
+capability. A fan-off run on an obstructed adapter is not the stock baseline.
 
 Do not consider an internal thermal-pad modification until these results are understood.
 
@@ -80,3 +86,31 @@ Secondary:
 - lower Apple internal-fan RPM at equal performance
 
 Temperature by itself is not the main success metric.
+
+## Standalone V2 follow-up experiments
+
+External review on September 15, 2026 raised these items. They are test proposals,
+not changes to the original V2 geometry in the V12-adapter work. The user chose
+to finish the V12 adapter first and defer standalone revisions:
+
+- Compare the 20 mm desk intake gap with 30-35 mm before selecting the standalone
+  fan. A nominal 140 mm circle has 154 cm² area; a 20 mm peripheral approach gives
+  about 88-112 cm² depending on a circular or square boundary. At 35 mm that range
+  is about 154-196 cm². These are area estimates, not pressure-loss or fan-curve
+  measurements. Test 38 mm-thick fans separately and record their actual clearance.
+- After measuring the Mac, compare safe insert sizes while keeping the rest of
+  the airflow path fixed. Candidates are 44 × 8, 48 × 8, and 48 × 10 mm, plus the
+  maximum opening justified by actual intake/exhaust boundaries. Rounded corners
+  slightly reduce the quoted rectangular areas. Use the blank for fit/leak checks,
+  not as a powered laptop-cooling configuration.
+- Recheck the 96 mm-wide raised cradle and stop locations against the actual Max.
+  Narrowing supports may increase exhaust clearance; moving them inward can also
+  approach the center intake and change where the load lands. Measure first.
+- Consider shallow underside lid ribs if the dummy-load/cable-load test shows
+  flex. Any ribs must preserve the air path, nut access, shell-boss clearance,
+  and a workable print orientation. Do not treat static laptop weight as the only
+  load case.
+
+V12-powered testing isolates the upper airflow path without the standalone fan's
+desk-intake restriction. Leave cosmetic redesign until the pressure, interface,
+and structural tests establish which geometry is worth keeping.

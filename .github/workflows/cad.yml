@@ -36,6 +36,11 @@ jobs:
           python tools/check_mesh.py build/upright_macbook_140mm_pressure_dock_v1.stl
       - name: Check published STL snapshot
         run: python tools/check_mesh.py cad/upright_v2/stl/*.stl
+      - name: Check V12 validation adapter and interfaces
+        run: |
+          make -j2 stl-v12
+          make check-v12
+          python tools/check_mesh.py cad/upright_v2/v12_validation/stl/*.stl
       - name: Check lean endpoints
         run: |
           for angle in 8 12; do

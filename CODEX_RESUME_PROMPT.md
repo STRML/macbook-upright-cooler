@@ -23,6 +23,21 @@ are under `build/upright_v2/`; use `make stl-v2`, `make preview-v2`, and
 `cad/upright_v2/stl/`; do not let it silently drift from the source. The public
 repository is `STRML/macbook-upright-cooler`. Check Git/GitHub state before edits.
 
+The separate `cad/upright_v2/v12_validation/` adapter connects V2's unchanged
+upper assembly to a provisional llano V12 deck. The user explicitly has NOT
+fit-checked the old V12 panels. Start with `make gauge-v12` and `make coupon-v12`,
+then measure the real cooler and establish positive housing restraint before a
+powered test. Read that adapter's README for the supported workflow. The source
+does not model an unverified V12 body or attachment route. Follow the user's
+direct-main publishing instruction; do not open another PR for this work.
+
+The user chose V12 validation first, with standalone intake-clearance, lid-rib,
+support, and larger-insert proposals recorded in `docs/BENCHMARK_PLAN.md` for
+later. Do not implement those proposals as part of finishing the V12 adapter.
+The intended fan direction is pressure into the center hinge intake, with outer
+hinge exhausts and side intakes clear. Read the airflow section in
+`docs/VENT_GEOMETRY.md` before changing that path.
+
 Important: do not guess final MacBook vent dimensions. Parameterize uncertain geometry and clearly identify measurements that must be taken from the physical machine or a trustworthy mechanical reference before a final STL is produced.
 
 When you generate CAD:
