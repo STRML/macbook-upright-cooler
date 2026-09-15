@@ -10,6 +10,11 @@ M4_COLLAR = concat([for(x=[-82,82]) for(y=[-46,46]) [x,y]],
                    [for(x=[-44,44]) for(y=[-76,76]) [x,y]]);
 M4_BRIDGES = concat([for(x=[-12,12]) for(y=[-112,112]) [x,y]],
                     [for(x=[-164,164]) for(y=[-12,12]) [x,y]]);
+// Independent fit envelope for a typical purchased nut plus a modest
+// dimensional allowance. Keep this independent from the source pocket
+// allowance so the zero-clearance regression cases remain meaningful.
+NUT_TEST_AF_ALLOWANCE = 0.20;
+NUT_TEST_Z_ALLOWANCE = 0.15;
 
 module stack_lower() {
     v12_deck();
@@ -17,7 +22,7 @@ module stack_lower() {
     translate([0,0,12]) base();
 }
 module collar_probe(overlap_mm=0) {
-    // Lift the nominal Z=6 contact plane by the allowance. A positive overlap
+    // Lift the modeled-baseline Z=6 contact plane by the allowance. A positive overlap
     // argument deliberately moves the real collar into the real deck.
     translate([0,0,6 + CONTACT_PROBE_MM - overlap_mm]) v12_collar();
 }
@@ -33,6 +38,7 @@ module m3_hardware() {
     }
 }
 module m4_hardware() {
+    // Screw-only check retained separately from the nut-pocket fit check below.
     // Conservative 8 mm head and 4 mm shank, flush at Z=12.
     for(p=concat(M4_COLLAR,M4_BRIDGES)) translate([p[0],p[1],0]) {
         cylinder(d=4,h=10);
@@ -41,12 +47,20 @@ module m4_hardware() {
 }
 module m4_hardware_probe() {
     // Keep the hardware dimensions unchanged; trim only its probe's top face
-    // below the nominal Z=12 bridge plane to avoid coplanar CGAL contact.
+    // below the modeled-baseline Z=12 bridge plane to avoid coplanar CGAL contact.
     intersection() {
         m4_hardware();
         translate([0,0,(12 - CONTACT_PROBE_MM) / 2])
             cube([400,400,12 - CONTACT_PROBE_MM],center=true);
     }
+}
+module m4_nut_fit_envelopes(af_allowance=NUT_TEST_AF_ALLOWANCE,
+                            z_allowance=NUT_TEST_Z_ALLOWANCE) {
+    // Start and finish just inside the modeled-baseline faces to avoid coplanar
+    // contact. The resulting envelope still tests both pocket walls and roof.
+    for(p=concat(M4_COLLAR,M4_BRIDGES)) translate([p[0],p[1],CONTACT_PROBE_MM])
+        v12_hex_nut(v12_m4_nut_af() + af_allowance,
+                    v12_m4_nut_h() + z_allowance - 2 * CONTACT_PROBE_MM);
 }
 
 if(TEST=="positive_control") cube([2,2,2]);
@@ -75,6 +89,20 @@ else if(TEST=="m3_hardware") intersection() { stack_lower(); m3_hardware(); }
 else if(TEST=="m4_hardware") intersection() {
     union() { stack_lower(); v12_bridges(); }
     m4_hardware_probe();
+}
+else if(TEST=="m4_nut_fit" ||
+        TEST=="m4_nut_fit_no_clearance" ||
+        TEST=="m4_nut_fit_no_depth_clearance") intersection() {
+    // The deck must clear the real hex solids at all 16 nut pockets.
+    v12_deck();
+    m4_nut_fit_envelopes();
+}
+else if(TEST=="positive_nut_collision") intersection() {
+    // Deliberately over-size the nut envelope. This must produce a collision
+    // if the fit test is actually looking at pocket walls and roof.
+    v12_deck();
+    m4_nut_fit_envelopes(v12_m4_nut_clearance() + 0.95,
+                         v12_m4_nut_z_clearance() + 0.80);
 }
 else if(TEST=="air_path") intersection() {
     stack_lower();

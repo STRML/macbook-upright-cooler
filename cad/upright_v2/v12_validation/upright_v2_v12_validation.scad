@@ -47,6 +47,21 @@ V12_M4_HEAD_D = 8.4;
 V12_M4_CS_DEPTH = 2.2;
 V12_M4_NUT_AF = 7.3;
 V12_M4_NUT_H = 3.4;
+// Starting fit allowance for the modeled-baseline M4 hex nut. This is an across-flats
+// allowance, not a claim about any particular printer or hardware batch.
+// Measure the purchased nuts and dry-fit a printed pocket before assembly.
+V12_M4_NUT_CLEARANCE = 0.25;
+// A small vertical allowance keeps the pocket roof from becoming the first
+// interference when layer height, first-layer spread, or nut thickness varies.
+V12_M4_NUT_Z_CLEARANCE = 0.20;
+
+// `use` imports functions and modules, but not ordinary variables. Keep these
+// accessors public so interface tests can exercise command-line overrides of
+// the pocket contract without duplicating its modeled-baseline dimensions.
+function v12_m4_nut_af() = V12_M4_NUT_AF;
+function v12_m4_nut_h() = V12_M4_NUT_H;
+function v12_m4_nut_clearance() = V12_M4_NUT_CLEARANCE;
+function v12_m4_nut_z_clearance() = V12_M4_NUT_Z_CLEARANCE;
 
 V12_TAB_R = 6.5;
 V12_TAB_CLEAR_R = 6.8;
@@ -147,6 +162,11 @@ if (!v12_is_gauge_part(PART)) {
            "Deck must be thick enough for underside M4 nuts");
     assert(V12_M4_CS_DEPTH > 0 && V12_M4_CS_DEPTH < V12_DECK_T,
            "Invalid M4 countersink depth");
+    assert(V12_M4_NUT_CLEARANCE >= 0 && V12_M4_NUT_Z_CLEARANCE >= 0,
+           "M4 nut clearances must be nonnegative");
+    assert(V12_M4_NUT_AF > 0 && V12_M4_NUT_H > 0 &&
+           V12_M4_NUT_H + V12_M4_NUT_Z_CLEARANCE < V12_DECK_T,
+           "M4 nut pocket must leave a deck roof");
     assert(V12_TAB_CLEAR_R > V12_TAB_R && V12_TAB_R > V12_M3_CB_D / 2,
            "Tab and clearance radii are invalid");
     assert(V12_TAB_R + V12_M3_AXIS < V12_W_TBD / 2 &&
@@ -240,7 +260,8 @@ module v12_deck_m4_cuts() {
             v12_bore(V12_DECK_T, V12_M4_D);
             // Flat underside pocket for a standard M4 nut, not a through slot.
             translate([0, 0, -EPS])
-                v12_hex_nut(V12_M4_NUT_AF, V12_M4_NUT_H + EPS);
+                v12_hex_nut(V12_M4_NUT_AF + V12_M4_NUT_CLEARANCE,
+                            V12_M4_NUT_H + V12_M4_NUT_Z_CLEARANCE + EPS);
         }
 }
 

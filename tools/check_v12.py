@@ -1,4 +1,4 @@
-"""Check default V12 adapter intersections and real fastener envelopes."""
+"""Check default V12 adapter intersections and modeled hardware envelopes."""
 
 import argparse
 import os
@@ -12,7 +12,19 @@ import trimesh
 
 CASES = ["positive_control", "empty_control", "tile_overlap", "deck_collar",
          "base_collar", "bridges_clear", "m3_hardware", "m4_hardware", "air_path",
-         "gauge_window", "deck_material", "positive_collision"]
+         "gauge_window", "deck_material", "positive_collision", "m4_nut_fit",
+         "positive_nut_collision", "m4_nut_fit_no_clearance",
+         "m4_nut_fit_no_depth_clearance"]
+OVERRIDES = {
+    # These two cases intentionally shrink the source pocket. A nonempty
+    # result proves the default fit test is sensitive to both allowances.
+    "m4_nut_fit_no_clearance": ["-D", "V12_M4_NUT_CLEARANCE=0"],
+    "m4_nut_fit_no_depth_clearance": ["-D", "V12_M4_NUT_Z_CLEARANCE=0"],
+}
+POSITIVE_CASES = {
+    "positive_control", "positive_collision", "positive_nut_collision",
+    "m4_nut_fit_no_clearance", "m4_nut_fit_no_depth_clearance",
+}
 TOLERANCE_MM3 = 1e-6
 
 
@@ -26,7 +38,8 @@ def main():
         for case in CASES:
             output = Path(directory) / f"{case}.stl"
             command = shlex.split(args.openscad) + [
-                "--hardwarnings", "-D", f'TEST="{case}"', "-o", str(output),
+                "--hardwarnings", *OVERRIDES.get(case, []),
+                "-D", f'TEST="{case}"', "-o", str(output),
                 str(root / "tests/v12_interfaces.scad"),
             ]
             try:
@@ -49,7 +62,7 @@ def main():
                     raise ValueError(f"OpenSCAD exited {result.returncode}: {log.strip()}")
                 if case == "positive_control":
                     valid = abs(volume - 8) < TOLERANCE_MM3
-                elif case == "positive_collision":
+                elif case in POSITIVE_CASES:
                     valid = volume > 1
                 else:
                     valid = volume < TOLERANCE_MM3

@@ -120,8 +120,15 @@ hardware and actual printed dimensions before tightening.
 
 The M4 × 12 length has almost no spare length across the two 6 mm layers.
 Dry-fit a complete screw/nut joint before assembly and check thread engagement
-without underside protrusion. Check every nut pocket for fit; the automated
-M4 clearance test models the screw, not the nut or print tolerances.
+without underside protrusion. The deck pockets start with a 0.25 mm
+across-flats allowance and a 0.20 mm vertical allowance around the modeled
+7.3 mm AF × 3.4 mm nut baseline. These are exposed starting parameters, not universal
+FDM tolerances. The automated `m4_nut_fit` case checks the modeled-baseline nut plus a
+separate 0.20 mm AF / 0.15 mm height test envelope in all 16 pockets, including
+the pocket walls and roof; regression cases deliberately remove each source
+allowance and must report a collision. Measure the purchased nuts and dry-fit
+every pocket anyway, since first-layer spread, elephant foot, layer anisotropy,
+printer calibration, and hardware variation are not certified by CAD.
 
 Use washers no larger than 7 mm outside diameter. The M3 head recess is 8.2 mm
 diameter and 3.5 mm deep. A 2.5 mm-high pan head plus a 0.5 mm washer sits about

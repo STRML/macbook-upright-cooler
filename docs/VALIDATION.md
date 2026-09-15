@@ -46,15 +46,20 @@ coordinates. The [adapter guide](../cad/upright_v2/v12_validation/README.md) lis
 measured print envelopes and quantities. The assembled printed envelope is
 381 × 269 × 91.24 mm, excluding the laptop and V12 cooler.
 
-The 12 cases in `tools/check_v12.py` include an 8 mm³ positive control, an empty
-negative control, and an intentionally overlapping real deck/collar joint. The
-remaining cases check tile overlap, deck/collar and base/collar contact, bridge
-clearance, M3 and M4 hardware envelopes, the full
-lower inlet, an unobstructed gauge window, and actual deck material thickness
-away from the tabs. The window and thickness checks caught initial construction
-errors that watertightness and overall bounding boxes alone would not detect.
-The M4 test covers the screw envelope, not the nut. Actual nut-pocket fit and
-the nearly flush M4 × 12 stack require a printed hardware check.
+The 16 cases in `tools/check_v12.py` include an 8 mm³ positive control, an empty
+negative control, and intentionally overlapping real deck/collar and oversized
+nut-pocket controls. The remaining cases check tile overlap, deck/collar and
+base/collar contact, bridge clearance, separate M3 and M4 screw envelopes, the
+full lower inlet, an unobstructed gauge window, actual deck material thickness
+away from the tabs, and nut fit in all 16 M4 pockets. The nut-fit case models a
+modeled-baseline hex nut plus a documented AF/height test allowance and intersects that
+solid with the actual deck, so both pocket walls and the roof are checked. Two
+additional runs set the source lateral or vertical allowance to zero and must
+fail with a collision, proving the check is sensitive to undersized or
+too-shallow pockets. This models a conservative starting envelope, not all FDM
+layer, first-layer, printer, or hardware variation; purchased nuts still need
+a physical dry-fit. The nearly flush M4 × 12 stack also requires a printed
+hardware check.
 
 The first Linux run rebuilt all 13 parts successfully, but CGAL exported the
 intentional contact planes in three interface tests as zero-thickness surfaces.
