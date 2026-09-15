@@ -1,4 +1,5 @@
 numpy>=1.24,<3
 trimesh>=4,<6
+networkx>=3,<4
 matplotlib>=3.7,<4
 pillow>=10,<13

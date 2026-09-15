@@ -14,9 +14,12 @@ center-window insert, with raised hardware confined to a 96 mm-wide cradle.
 
 Next physical step: validate the hinge recess, vent boundaries, and padded stop
 locations on the actual Max, using the blank insert first. Then leak-test the
-assembled parts and run the benchmark plan. The publication target is
+assembled parts and run the benchmark plan. The public repository is
 [`STRML/macbook-upright-cooler`](https://github.com/STRML/macbook-upright-cooler).
-Check Git and GitHub for the current branch, review, and physical-test issue state.
+The user requested direct publication to `main`, without a PR. Check Git and
+GitHub before edits. Physical validation is tracked in
+[issue #2](https://github.com/STRML/macbook-upright-cooler/issues/2), followed by
+[performance testing in #3](https://github.com/STRML/macbook-upright-cooler/issues/3).
 
 ## Goal
 

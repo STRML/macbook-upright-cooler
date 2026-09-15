@@ -4,6 +4,11 @@ Checked September 15, 2026 with OpenSCAD 2026.01.02 (Manifold, macOS x86_64),
 Python 3.12, and trimesh 5.1.0. These are digital geometry checks, not physical
 test results.
 
+The Python checks were repeated in a clean virtual environment with only
+`tools/requirements.txt` installed. All five validator regression tests and
+the nine rebuilt and published V2 meshes pass. NetworkX is declared explicitly
+because trimesh's connected-solid checks need a graph backend.
+
 ## Export checks
 
 `make stl-v2` and `make check-v2` pass for all nine default parts. Each export is
