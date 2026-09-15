@@ -46,14 +46,24 @@ coordinates. The [adapter guide](../cad/upright_v2/v12_validation/README.md) lis
 measured print envelopes and quantities. The assembled printed envelope is
 381 × 269 × 91.24 mm, excluding the laptop and V12 cooler.
 
-The 11 cases in `tools/check_v12.py` pass with an 8 mm³ positive control and an
-empty negative control. The remaining cases check tile overlap, deck/collar and
-base/collar contact, bridge clearance, M3 and M4 hardware envelopes, the full
+The 12 cases in `tools/check_v12.py` include an 8 mm³ positive control, an empty
+negative control, and an intentionally overlapping real deck/collar joint. The
+remaining cases check tile overlap, deck/collar and base/collar contact, bridge
+clearance, M3 and M4 hardware envelopes, the full
 lower inlet, an unobstructed gauge window, and actual deck material thickness
 away from the tabs. The window and thickness checks caught initial construction
 errors that watertightness and overall bounding boxes alone would not detect.
 The M4 test covers the screw envelope, not the nut. Actual nut-pocket fit and
 the nearly flush M4 × 12 stack require a printed hardware check.
+
+The first Linux run rebuilt all 13 parts successfully, but CGAL exported the
+intentional contact planes in three interface tests as zero-thickness surfaces.
+Those probes now exclude 0.001 mm at the intended contact plane; print geometry
+is unchanged. Moving the collar probe down 0.1 mm creates 0.099 mm of real
+deck/collar overlap, which must still produce positive volume. Warning failures
+remain enabled, so unrelated export problems cannot pass as empty intersections.
+These probes check interference beyond that stated
+allowance, not mathematical separation at an exact shared face.
 
 Assembly, exploded, and gauge previews were rendered from the final source and
 visually checked. The gauge preview contains only its four unloaded pieces; it

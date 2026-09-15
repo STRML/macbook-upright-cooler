@@ -3,6 +3,7 @@ use <../cad/upright_v2/v12_validation/upright_v2_v12_validation.scad>
 use <../cad/upright_v2/upright_macbook_140mm_pressure_dock_v2.scad>
 $fn = 64;
 TEST = "air_path";
+CONTACT_PROBE_MM = 0.001;
 QUADS = [[1,1],[-1,1],[-1,-1],[1,-1]];
 M3_POINTS = [[74,0],[0,74],[-74,0],[0,-74]];
 M4_COLLAR = concat([for(x=[-82,82]) for(y=[-46,46]) [x,y]],
@@ -14,6 +15,14 @@ module stack_lower() {
     v12_deck();
     translate([0,0,6]) v12_collar();
     translate([0,0,12]) base();
+}
+module collar_probe(overlap_mm=0) {
+    // Lift the nominal Z=6 contact plane by the allowance. A positive overlap
+    // argument deliberately moves the real collar into the real deck.
+    translate([0,0,6 + CONTACT_PROBE_MM - overlap_mm]) v12_collar();
+}
+module base_probe() {
+    translate([0,0,12 + CONTACT_PROBE_MM]) base();
 }
 module m3_hardware() {
     // 2.5 mm pan head, 0.5 mm washer, 16 mm under-head length.
@@ -30,10 +39,22 @@ module m4_hardware() {
         translate([0,0,10]) cylinder(d1=4,d2=8,h=2);
     }
 }
+module m4_hardware_probe() {
+    // Keep the hardware dimensions unchanged; trim only its probe's top face
+    // below the nominal Z=12 bridge plane to avoid coplanar CGAL contact.
+    intersection() {
+        m4_hardware();
+        translate([0,0,(12 - CONTACT_PROBE_MM) / 2])
+            cube([400,400,12 - CONTACT_PROBE_MM],center=true);
+    }
+}
 
 if(TEST=="positive_control") cube([2,2,2]);
 else if(TEST=="empty_control") intersection() {
     cube([1,1,1]); translate([2,0,0]) cube([1,1,1]);
+}
+else if(TEST=="positive_collision") intersection() {
+    v12_deck(); collar_probe(0.1);
 }
 else if(TEST=="tile_overlap")
     for(i=[0:2]) for(j=[i+1:3]) intersection() {
@@ -41,10 +62,10 @@ else if(TEST=="tile_overlap")
         v12_deck_tile(QUADS[j][0],QUADS[j][1]);
     }
 else if(TEST=="deck_collar") intersection() {
-    v12_deck(); translate([0,0,6]) v12_collar();
+    v12_deck(); collar_probe();
 }
 else if(TEST=="base_collar") intersection() {
-    translate([0,0,12]) base(); translate([0,0,6]) v12_collar();
+    base_probe(); translate([0,0,6]) v12_collar();
 }
 else if(TEST=="bridges_clear") intersection() {
     v12_bridges();
@@ -53,7 +74,7 @@ else if(TEST=="bridges_clear") intersection() {
 else if(TEST=="m3_hardware") intersection() { stack_lower(); m3_hardware(); }
 else if(TEST=="m4_hardware") intersection() {
     union() { stack_lower(); v12_bridges(); }
-    m4_hardware();
+    m4_hardware_probe();
 }
 else if(TEST=="air_path") intersection() {
     stack_lower();

@@ -12,7 +12,7 @@ import trimesh
 
 CASES = ["positive_control", "empty_control", "tile_overlap", "deck_collar",
          "base_collar", "bridges_clear", "m3_hardware", "m4_hardware", "air_path",
-         "gauge_window", "deck_material"]
+         "gauge_window", "deck_material", "positive_collision"]
 TOLERANCE_MM3 = 1e-6
 
 
@@ -47,8 +47,12 @@ def main():
                     volume = abs(float(mesh.volume))
                 else:
                     raise ValueError(f"OpenSCAD exited {result.returncode}: {log.strip()}")
-                valid = (abs(volume - 8) < TOLERANCE_MM3 if case == "positive_control"
-                         else volume < TOLERANCE_MM3)
+                if case == "positive_control":
+                    valid = abs(volume - 8) < TOLERANCE_MM3
+                elif case == "positive_collision":
+                    valid = volume > 1
+                else:
+                    valid = volume < TOLERANCE_MM3
                 if not valid:
                     raise ValueError(f"Unexpected intersection volume {volume:.9g} mm³")
                 print(f"PASS {case}: {volume:.9g} mm³", flush=True)
